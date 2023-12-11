@@ -46,7 +46,7 @@ def install_groundingdino():
     if (
         not check_system_machine()
         or (torch_version, cuda_version)
-        not in [('1.13.1', '117'), ('2.0.0', '117'), ('2.0.0', '118')]
+        not in [('1.13.1', '117'), ('2.0.1', '117'), ('2.0.1', '118')]
         or not python_version
     ):
         launch.run_pip('install git+https://github.com/IDEA-Research/GroundingDINO', 'sd-webui-ddsd requirement: groundingdino')
