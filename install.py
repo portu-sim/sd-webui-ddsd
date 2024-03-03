@@ -43,17 +43,27 @@ def install_groundingdino():
     cuda_version = torch.version.cuda.replace('.', '')
     python_version = check_python_version(9, 10)
 
+    system = 'win' if platform.system() == 'Windows' else 'linux'
+    machine = 'amd64' if platform.machine() == 'AMD64' else 'x86_64'
+
+    if torch_version in ['2.1.0', '2.1.1', '2.1.2'] and cuda_version == '121':
+        url = 'https://github.com/Bing-su/GroundingDINO/releases/download/v23.9.27/groundingdino-23.9.27+torch2.1.0.cu121-cp{py}-cp{py}-{system}_{machine}.whl'
+        url = url.format(
+            py=python_version,
+            system=system,
+            machine=machine,
+        )
+        launch.run_pip(f'install {url}', 'sd-webui-ddsd requirement: groundingdino')
+        return
+
     if (
         not check_system_machine()
         or (torch_version, cuda_version)
-        not in [('1.13.1', '117'), ('2.0.1', '117'), ('2.0.1', '118')]
+        not in [('1.13.1', '117'), ('2.0.1', '117'), ('2.0.1', '118'), ('2.1.0', '121')]
         or not python_version
     ):
         launch.run_pip('install git+https://github.com/IDEA-Research/GroundingDINO', 'sd-webui-ddsd requirement: groundingdino')
         return
-
-    system = 'win' if platform.system() == 'Windows' else 'linux'
-    machine = 'amd64' if platform.machine() == 'AMD64' else 'x86_64'
 
     url = 'https://github.com/Bing-su/GroundingDINO/releases/download/wheel-0.1.0/groundingdino-0.1.0+torch{torch}.cu{cuda}-cp{py}-cp{py}-{system}_{machine}.whl'
     url = url.format(
